@@ -1,17 +1,17 @@
-FactoryBot.define do
-    def setup
-        @names = CSV.readlines('./test/fixtures/names.csv', headers: true)
-    end
+require 'csv'
 
+FactoryBot.define do
+    @names = CSV.readlines('./test/fixtures/names.csv', headers: true)
+    
     sequence :email do |n|
         "user#{n}@domain.com"
     end
 
-    sequence(:name, 0..600) do |n|
+    sequence(:name, (0..600).cycle) do |n|
         @names['name'][n]
     end
 
-    sequence(:lastname, 0..600) do |n|
+    sequence(:lastname, (0..600).cycle) do |n|
         @names['name'][n] + 'son'
     end
     
@@ -23,7 +23,7 @@ FactoryBot.define do
         "Example #{n} description \nSecond line of discription \nThird line of description "
     end
 
-    sequence(:user_type, 0..2) do |n|
+    sequence(:user_type, (0..2).cycle) do |n|               
         user_types = ['admin', 'manager', 'developer']
         user_types[n]
     end
