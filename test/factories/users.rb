@@ -8,6 +8,18 @@ FactoryBot.define do
     email { generate :email }
     avatar { './test/fixtures/files/avatar.png' }
     type { generate :user_type }
+    
+    factory :admin do
+      type { 'admin' }
+    end
+
+    factory :developer do
+      type { 'developer' }
+    end  
+
+    factory :manager do
+      type { 'manager' }
+    end
 
     trait :author do
       type { 'manager' }
