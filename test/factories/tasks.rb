@@ -4,9 +4,12 @@ FactoryBot.define do
   factory :task do
     name { generate :task_name }
     description { generate :task_description }
-    author_id { }
-    assignee_id {}
+    association :author, factory: [:user, :author]    
     state { 'new_task' }
     expired_at { DateTime.now + 15 }
+
+    trait :assigned do
+      association :assignee, factory: [:user, :assignee]
+    end
   end
 end
