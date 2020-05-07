@@ -10,23 +10,23 @@ FactoryBot.define do
     type { generate :user_type }
     
     factory :admin do
-      type { 'admin' }
+      type { 'Admin' }
     end
 
     factory :developer do
-      type { 'developer' }
+      type { 'Developer' }
     end  
 
     factory :manager do
-      type { 'manager' }
+      type { 'Manager' }
     end
 
     trait :author do
-      type { 'manager' }
+      type { 'Manager' }
     end
 
     trait :assignee do
-      type { 'developer' }
+      type { 'Developer' }
     end
   end
 end
