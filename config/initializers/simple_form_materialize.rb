@@ -22,3 +22,4 @@ SimpleForm.setup do |config|
   
     config.default_wrapper = :materialize_form
   end
+  
