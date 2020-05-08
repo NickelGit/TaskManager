@@ -28,7 +28,7 @@ FactoryBot.define do
   end
 
   sequence(:user_type, (0..2).cycle) do |n|
-    user_types = ['admin', 'manager', 'developer']
+    user_types = ['Admin', 'Manager', 'Developer']
     user_types[n]
   end
 

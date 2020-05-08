@@ -9,12 +9,16 @@ FactoryBot.define do
     avatar { './test/fixtures/files/avatar.png' }
     type { generate :user_type }
 
-    trait :author do
-      type { 'manager' }
+    factory :admin do
+      type { 'Admin' }
     end
 
-    trait :assignee do
-      type { 'developer' }
+    factory :developer do
+      type { 'Developer' }
+    end
+
+    factory :manager do
+      type { 'Manager' }
     end
   end
 end
