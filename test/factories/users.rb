@@ -7,7 +7,6 @@ FactoryBot.define do
     password { generate :password_hash }
     email { generate :email }
     avatar { './test/fixtures/files/avatar.png' }
-    type { generate :user_type }
 
     factory :admin do
       type { 'Admin' }
