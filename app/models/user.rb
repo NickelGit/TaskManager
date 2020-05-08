@@ -10,6 +10,6 @@ class User < ApplicationRecord
   validates :last_name, presence: true
   validates :last_name, length: { minimum: 2 }
   validates :email, presence: true
-  validates :email, format: { with: /\A.+@.+\Z/ }
+  validates :email, format: { with: /\A\S+@.+\.\S+\z/ }
   validates :email, uniqueness: true
 end
