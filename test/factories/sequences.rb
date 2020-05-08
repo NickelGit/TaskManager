@@ -27,11 +27,6 @@ FactoryBot.define do
     'Third line of description'
   end
 
-  sequence(:user_type, (0..2).cycle) do |n|
-    user_types = ['admin', 'manager', 'developer']
-    user_types[n]
-  end
-
   sequence(:password_hash) do |n|
     "pass#{n}hash"
   end
