@@ -30,4 +30,8 @@ FactoryBot.define do
   sequence(:password_hash) do |n|
     "pass#{n}hash"
   end
+
+  sequence(:string) do |n|
+    "string#{n}"
+  end
 end
