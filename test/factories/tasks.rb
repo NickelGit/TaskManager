@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :task do
-    name { generate :task_name }
-    description { generate :task_description }
+    name
+    description
     author factory: :manager
     state { 'new_task' }
     expired_at { DateTime.now + 15 }
