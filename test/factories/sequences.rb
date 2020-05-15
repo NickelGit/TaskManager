@@ -9,26 +9,26 @@ FactoryBot.define do
     "user#{n}@domain.com"
   end
 
-  sequence(:name, (0..600).cycle) do |n|
+  sequence(:first_name, (0..600).cycle) do |n|
     @names['name'][n]
   end
 
-  sequence(:lastname, (0..600).cycle) do |n|
+  sequence(:last_name, (0..600).cycle) do |n|
     @names['name'][n] + 'son'
   end
 
-  sequence(:task_name) do |n|
+  sequence(:task_name, aliases: [:name]) do |n|
     "Example task name no.#{n}"
   end
 
-  sequence(:task_description) do |n|
+  sequence(:description) do |n|
     "Example #{n} description\n"\
     "Second line of discription\n"\
     'Third line of description'
   end
 
-  sequence(:password_hash) do |n|
-    "pass#{n}hash"
+  sequence(:password) do |n|
+    "pass#{n}"
   end
 
   sequence(:string) do |n|

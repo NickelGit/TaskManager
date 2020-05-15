@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :user do
-    first_name { generate :name }
-    last_name { generate :lastname }
-    password { generate :password_hash }
-    email { generate :email }
+    first_name
+    last_name
+    password
+    email
     avatar { './test/fixtures/files/avatar.png' }
 
     factory :admin do
