@@ -14,9 +14,9 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
   end
 
   test 'should post create' do
-    author = create(:user)
+    author = create(:manager)
     sign_in(author)
-    assignee = create(:user)
+    assignee = create(:developer)
     task_attributes = attributes_for(:task).
       merge({ assignee_id: assignee.id })
     post :create, params: { task: task_attributes, format: :json }
@@ -26,12 +26,14 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
     created_task = Task.find(data['task']['id'])
 
     assert created_task.present?
+    p task_attributes
+    p created_task
     assert_equal task_attributes.stringify_keys, created_task.slice(*task_attributes.keys)
   end
 
   test 'should put update' do
-    author = create(:user)
-    assignee = create(:user)
+    author = create(:manager)
+    assignee = create(:developer)
     task = create(:task, author: author)
     task_attributes = attributes_for(:task).
       merge({ author_id: author.id, assignee_id: assignee.id }).

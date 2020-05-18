@@ -1,7 +1,11 @@
 class Api::V1::TasksController < Api::V1::ApplicationController
   respond_to :json
 
-  def show; end
+  def show
+    task = Task.find(params[:id])
+
+    respond_with(task, serializer: TaskSerializer)
+  end
 
   def index
     tasks = Task.all.
@@ -14,13 +18,30 @@ class Api::V1::TasksController < Api::V1::ApplicationController
 
   def new; end
 
-  def create; end
+  def create
+    task = current_user.my_tasks.new(task_params)
+    task.save
 
-  def update; end
+    respond_with(task, serializer: TaskSerializer, location: nil)
+  end
 
-  def destroy; end
+  def update
+    task = Task.find(params[:id])
+    task.update(task_params)
+
+    respond_with(task, serializer: TaskSerializer)
+  end
+
+  def destroy
+    task = Task.find(params[:id])
+    task.destroy
+
+    respond_with(task)
+  end
 
   private
 
-  def task_params; end
+  def task_params
+    params.require(:task).permit(:name, :description, :author_id, :assignee_id, :state_event)
+  end
 end
