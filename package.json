@@ -27,6 +27,7 @@
     "styled-components": "^5.1.0",
     "webpacker-react": "^0.3.2"
   },
+  "scripts": { "lint": "node_modules/.bin/eslint app/javascript" },
   "version": "0.1.0",
   "devDependencies": {
     "webpack-dev-server": "^3.10.3"
