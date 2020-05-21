@@ -41,8 +41,9 @@
   "react/no-array-index-key": ["off"],
   "filenames/match-exported": 2,
   "react/prop-types": [2, { "ignore": ["classes", "match", "dictionaries", "errors", "history", "children", "location"] }],
-  "no-debugger": 0,
+  "no-debugger": 1,
   "react/destructuring-assignment": 0,
-  "react/static-property-placement": 0
+  "react/static-property-placement": 0,
+  "max-len": [1, 120, 2]
   }
 }
