@@ -24,7 +24,7 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
 
     data = JSON.parse(response.body)
     created_task = Task.find(data['task']['id'])
-    
+
     assert_equal task_attributes.stringify_keys, created_task.slice(*task_attributes.keys)
   end
 
