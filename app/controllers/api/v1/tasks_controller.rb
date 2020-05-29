@@ -26,6 +26,7 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   def update
     task = Task.find(params[:id])
     task.update(task_params)
+    
 
     respond_with(task, serializer: TaskSerializer)
   end

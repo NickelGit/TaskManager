@@ -54,6 +54,7 @@ export default {
 
   put(url, json) {
     const body = decamelize(json);
+    console.warn(body);
 
     return axios.put(url, body).then(camelize);
   },
