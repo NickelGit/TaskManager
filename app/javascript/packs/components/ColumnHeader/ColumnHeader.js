@@ -27,7 +27,7 @@ const ColumnHeader = ({ column, onLoadMore }) => {
       </div>
       <div className={styles.actions}>
         {count !== totalCount && (
-          <IconButton aria-label="Load more" onClick={() => handleLoadMore()}>
+          <IconButton aria-label="Load more" onClick={handleLoadMore}>
             <SystemUpdateAltIcon fontSize="small" />
           </IconButton>
         )}
