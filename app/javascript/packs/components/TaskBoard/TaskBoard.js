@@ -36,8 +36,6 @@ const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
   const styles = useStyles();
-  useEffect(() => loadBoard(), []);
-  useEffect(() => generateBoard(), [boardCards]);
 
   const loadColumn = (state, page, perPage) => {
     return TasksRepository.index({
@@ -70,7 +68,7 @@ const TaskBoard = () => {
   };
 
   const generateBoard = () => {
-    const board = {
+    const newBoard = {
       columns: STATES.map(({ key, value }) => {
         return {
           id: key,
@@ -81,12 +79,15 @@ const TaskBoard = () => {
       }),
     };
 
-    setBoard(board);
+    setBoard(newBoard);
   };
 
   const loadBoard = () => {
     STATES.map(({ key }) => loadColumnInitial(key));
   };
+
+  useEffect(() => loadBoard(), []);
+  useEffect(() => generateBoard(), [boardCards]);
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);

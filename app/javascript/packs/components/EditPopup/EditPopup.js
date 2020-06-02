@@ -70,7 +70,13 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
           )}
         </CardContent>
         <CardActions className={styles.actions}>
-          <Button disabled={isLoading || isSaving} onClick={handleCardUpdate} size="small" variant="contained" color="primary">
+          <Button
+            disabled={isLoading || isSaving}
+            onClick={handleCardUpdate}
+            size="small"
+            variant="contained"
+            color="primary"
+          >
             Update
           </Button>
           <Button
