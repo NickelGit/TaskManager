@@ -7,6 +7,7 @@ class Api::V1::TasksController < Api::V1::ApplicationController
 
   def index
     tasks = Task.
+      order(updated_at: :desc).
       ransack(ransack_params).
       result.
       page(page).
@@ -18,6 +19,7 @@ class Api::V1::TasksController < Api::V1::ApplicationController
 
   def create
     task = current_user.my_tasks.new(task_params)
+    task.author = current_user
     task.save
 
     respond_with(task, serializer: TaskSerializer, location: nil)
