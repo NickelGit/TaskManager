@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { has } from 'ramda';
 
 import TextField from '@material-ui/core/TextField';
-import UserSelect from 'components/UserSelect';
 
+import UserSelect from 'components/UserSelect';
 import TaskPresenter from 'presenters/TaskPresenter';
 import useStyles from './useStyles';
 
@@ -45,8 +45,8 @@ const Form = ({ errors, onChange, task }) => {
       <UserSelect
         label="Asignee"
         value={TaskPresenter.assignee(task)}
-        onChange={handleChangeSelect('asignee')}
-        isDisabled
+        onChange={handleChangeSelect('assignee')}
+        isDisabled={false}
         isRequired
         error={has('asignee', errors)}
         helperText={errors.asignee}
