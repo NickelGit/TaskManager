@@ -1,5 +1,6 @@
 language: ruby
 os: linux
+rvm: 2.7
 sudo: required
 services:
   - docker
