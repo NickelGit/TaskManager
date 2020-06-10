@@ -1,5 +1,7 @@
 # README
 
+Develop branch Build Status:
+[![Build Status](https://travis-ci.org/NickelGit/TaskManager.svg?branch=develop)](https://travis-ci.org/NickelGit/TaskManager)
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
