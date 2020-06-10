@@ -12,7 +12,7 @@ import UserPresenter from 'presenters/UserPresenter';
 
 import useStyles from './useStyles';
 
-const UserSelect = ({ error = false, label, isClearable, isDisabled, isRequired, onChange, value, helperText }) => {
+const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChange, value, helperText }) => {
   const [isFocused, setFocus] = useState(false);
   const styles = useStyles();
   const handleLoadOptions = (inputValue) =>
