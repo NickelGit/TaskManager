@@ -14,4 +14,4 @@ before_install:
   - docker-compose build
   - docker-compose run --rm web /bin/sh -c "bundle install; yarn install; RAILS_ENV=test  bundle exec rails db:create db:migrate"
 script:
-  - docker-compose run --rm web /bin/sh -c "RAILS_ENV=test  bundle exec rake test"
+  - docker-compose run --rm web /bin/sh -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" -e TRAVIS_BRANCH="$TRAVIS_BRANCH" -c "RAILS_ENV=test  bundle exec rake test"
