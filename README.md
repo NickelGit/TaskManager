@@ -1,7 +1,9 @@
 # README
 
-Develop branch Build Status:
+Develop branch 
 [![Build Status](https://travis-ci.org/NickelGit/TaskManager.svg?branch=develop)](https://travis-ci.org/NickelGit/TaskManager)
+[![Coverage Status](https://coveralls.io/repos/github/NickelGit/TaskManager/badge.svg?branch=develop)](https://coveralls.io/github/NickelGit/TaskManager?branch=develop)
+
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
