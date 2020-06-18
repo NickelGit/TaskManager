@@ -1,1 +1,18 @@
-| Task #{@task.id} was updated
+h1 Task #{@task.id} was updated
+b Name: 
+| #{@task.name} 
+br
+b Description: 
+| #{@task.description}
+br
+b Author: 
+| #{@task.author.first_name} 
+| #{@task.author.last_name} 
+br
+b Assignee: 
+- if @task.assignee.nil?
+  | none 
+- else
+  | #{@task.assignee.first_name}  
+  | #{@task.assignee.last_name}    
+p This is an automatic email. Please do not reply.

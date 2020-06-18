@@ -1,27 +1,27 @@
 # Preview all emails at http://localhost:3000/rails/mailers/user_mailer
 class UserMailerPreview < ActionMailer::Preview
   def task_created
-    user = User.first
     task = Task.first
-    params = { user: user, task: task }
-  
+    params = { task_id: task.id }
+
     UserMailer.with(params).task_created
   end
 
   def task_updated
-    user = User.first
     task = Task.first
-    params = { user: user, task: task }
-  
+    params = { task_id: task.id }
+
     UserMailer.with(params).task_updated
   end
 
   def task_deleted
-    user = User.first
     task = Task.first
-    params = { user: user, task: task }
-  
+    params = { author_id: task.author_id,
+               assignee_id: task.assignee_id,
+               task_id: task.id,
+               task_name: task.name,
+               task_description: task.description }
+
     UserMailer.with(params).task_deleted
   end
-  
 end

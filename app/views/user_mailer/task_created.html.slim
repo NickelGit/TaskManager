@@ -1,1 +1,11 @@
-| Task #{@task.id} was created
+h1 Task #{@task.id} was created 
+b Name: 
+| #{@task.name} 
+br
+b Description: 
+| #{@task.description}
+br
+b Author: 
+| #{@task.author.first_name} 
+| #{@task.author.last_name}   
+p This is an automatic email. Please do not reply.

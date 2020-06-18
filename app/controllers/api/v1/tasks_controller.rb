@@ -24,7 +24,7 @@ class Api::V1::TasksController < Api::V1::ApplicationController
     task.author = current_user
 
     if task.save
-      UserMailer.with({ user: current_user, task: task }).task_created.deliver_now
+      UserMailer.with({ task_id: task.id }).task_created.deliver_now
     end
 
     respond_with(task, serializer: TaskSerializer, location: nil)
@@ -33,7 +33,7 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   def update
     task = Task.find(params[:id])
     if task.update(task_params)
-      UserMailer.with({ user: task.author, task: task }).task_updated.deliver_now
+      UserMailer.with({ task_id: task.id }).task_updated.deliver_now
     end
 
     respond_with(task, serializer: TaskSerializer)
@@ -42,7 +42,12 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   def destroy
     task = Task.find(params[:id])
     if task.destroy
-      UserMailer.with({ user: task.author, task: task }).task_deleted.deliver_now
+      UserMailer.with({ author_id: task.author_id,
+                        assignee_id: task.assignee_id,
+                        task_id: task.id,
+                        task_name: task.name,
+                        task_description:
+        task.description }).task_deleted.deliver_now
     end
 
     respond_with(task)

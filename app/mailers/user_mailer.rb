@@ -1,23 +1,37 @@
 class UserMailer < ApplicationMailer
   default from: 'noreply@taskmanager.com'
   def task_created
-    user = params[:user]
-    @task = params[:task]
+    @task = Task.find(params[:task_id])
+    author = @task.author
 
-    mail(to: user.email, subject: 'New Task Created')
+    mail(to: author.email, subject: 'New Task Created')
   end
 
   def task_updated
-    user = params[:user]
-    @task = params[:task]
+    @task = Task.find(params[:task_id])
+    author = @task.author
 
-    mail(to: user.email, subject: 'Task Updated')
+    if @task.assignee.nil?
+      mail(to: author.email, subject: 'Task Updated')
+    else
+      assignee = @task.assignee
+
+      mail(to: [author.email, assignee.email], subject: 'Task Updated')
+    end
   end
 
   def task_deleted
-    user = params[:user]
-    @task = params[:task]
+    @task_id = params[:task_id]
+    @task_name = params[:task_name]
+    @task_description = params[:task_description]
+    author = User.find(params[:author_id])
 
-    mail(to: user.email, subject: 'Task Deleted')
+    if params[:assignee_id].nil?
+      mail(to: author.email, subject: 'Task Deleted')
+    else
+      assignee = User.find(params[:assignee_id])
+
+      mail(to: [author.email, assignee.email], subject: 'Task Deleted')
+    end
   end
 end
