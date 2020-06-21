@@ -34,4 +34,11 @@ class UserMailer < ApplicationMailer
       mail(to: [author.email, assignee.email], subject: 'Task Deleted')
     end
   end
+
+  def reset_password
+    @user = User.find(params[:user_id])
+    @url = params[:url]
+
+    mail(to: @user.email, subject: 'Reset password')
+  end
 end
