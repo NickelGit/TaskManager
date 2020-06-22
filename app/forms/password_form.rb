@@ -1,6 +1,5 @@
-class PasswordForm < User
+class PasswordForm
   include ActiveModel::Model
-  include BaseType
 
   attr_accessor(
     :email,

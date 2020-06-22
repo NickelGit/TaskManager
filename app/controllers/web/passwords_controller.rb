@@ -23,18 +23,20 @@ class Web::PasswordsController < Web::ApplicationController
 
   def update
     user = User.find_by(reset_password_token: params[:id])
-    if user.present? && password_token_valid?(user)
+    @password = PasswordForm.new(password_params)
+    @password.email = user.email
+    if user.present? && password_token_valid?(user) && @password.valid?
       if reset_password!(user, password_params[:password])
         redirect_to(:new_session)
       else
         render(json: { error: user.errors.full_messages }, status: :unprocessable_entity)
       end
     else
-      render(json: { error: ['Link not valid or expired. Try generating a new link.'] }, status: :not_found)
+      render(:edit)
     end
   end
 
   def password_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:password_form).permit(:email, :password, :password_confirmation)
   end
 end
