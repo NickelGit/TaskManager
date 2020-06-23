@@ -4,6 +4,10 @@ h4 Forgot your password?
   br
   | You will receive the email message containing link permitting you to change your password if you wish.
   p
-    = f.input :email    
+    = f.input :email
+    - flash.each do |type, message|
+      .flash
+      b
+        = message    
   p
     = f.button  :submit, "Reset My Password"

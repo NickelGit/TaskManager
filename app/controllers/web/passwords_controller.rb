@@ -6,14 +6,16 @@ class Web::PasswordsController < Web::ApplicationController
   end
 
   def create
-    user = User.find_by(email: password_params[:email])
+    @password = PasswordForm.new(password_params)    
 
-    if user.present?
+    if User.exists?(email: password_params[:email])
+      user = User.find_by(email: password_params[:email])
       generate_password_token!(user)
       UserMailer.with(user_id: user.id, url: root_url).reset_password.deliver_now
       redirect_to(:new_session)
     else
-      render(json: { error: ['Email address not found. Please check and try again.'] }, status: :not_found)
+      flash[:error] = "Email not found. Please try again."
+      render(:new)
     end
   end
 
@@ -29,7 +31,7 @@ class Web::PasswordsController < Web::ApplicationController
       if reset_password!(user, password_params[:password])
         redirect_to(:new_session)
       else
-        render(json: { error: user.errors.full_messages }, status: :unprocessable_entity)
+        render(:edit)
       end
     else
       render(:edit)
