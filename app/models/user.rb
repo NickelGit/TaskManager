@@ -12,5 +12,5 @@ class User < ApplicationRecord
   validates :email, presence: true
   validates :email, format: { with: /\A\S+@.+\.\S+\z/ }
   validates :email, uniqueness: true
-  validates :reset_password_token, uniqueness: true
+  validates :reset_password_token, uniqueness: {allow_nil: true, allow_blank: true}
 end
