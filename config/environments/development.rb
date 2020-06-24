@@ -61,6 +61,8 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  config.web_console.whiny_requests = false
+
   config.after_initialize do
     Bullet.enable = true
     Bullet.sentry = true
