@@ -8,7 +8,7 @@ module ResetPasswordHelper
   end
 
   def password_token_valid?(user)
-    (user.reset_password_sent_at + 1.second) > Time.current
+    (user.reset_password_sent_at + DAY) > Time.current
   end
 
   def reset_password!(user, password)
