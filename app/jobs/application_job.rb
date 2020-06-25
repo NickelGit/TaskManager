@@ -1,4 +1,6 @@
-class ApplicationJob < ActiveJob::Base
+class ApplicationJob
+  include Sidekiq::Worker
+  include Sidekiq::Throttled::Worker
   # Automatically retry jobs that encountered a deadlock
   # retry_on ActiveRecord::Deadlocked
 
