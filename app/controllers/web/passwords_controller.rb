@@ -9,8 +9,7 @@ class Web::PasswordsController < Web::ApplicationController
     if User.exists?(email: password_params[:email])
       user = User.find_by(email: password_params[:email])
       ResetPasswordManager::GeneratePasswordToken.call(user)
-      UserMailer.with(user_id: user.id, url: root_url).reset_password.deliver_now
-
+      SendPasswordResetNotificationJob.perform_async(user.id, root_url)
       redirect_to(:new_session)
     else
       flash[:error] = 'Email not found. Please try again.'
