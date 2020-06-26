@@ -1,20 +1,18 @@
 class Web::PasswordsController < Web::ApplicationController
-  include ResetPasswordHelper
-
   def new
     @password = PasswordForm.new
   end
 
   def create
-    @password = PasswordForm.new(password_params)    
+    @password = PasswordForm.new(password_params)
 
     if User.exists?(email: password_params[:email])
       user = User.find_by(email: password_params[:email])
-      generate_password_token!(user)
+      ResetPasswordManager::GeneratePasswordToken.call(user)
       UserMailer.with(user_id: user.id, url: root_url).reset_password.deliver_now
       redirect_to(:new_session)
     else
-      flash[:error] = "Email not found. Please try again."
+      flash[:error] = 'Email not found. Please try again.'
       render(:new)
     end
   end
@@ -27,8 +25,8 @@ class Web::PasswordsController < Web::ApplicationController
     user = User.find_by(reset_password_token: params[:id])
     @password = PasswordForm.new(password_params)
     @password.email = user.email
-    if user.present? && password_token_valid?(user) && @password.valid?
-      if reset_password!(user, password_params[:password])
+    if user.present? && @password.valid? && ResetPasswordManager::PasswordTokenValidation.call(user)
+      if ResetPasswordManager::ResetPassword.call(user, password_params[:password])
         redirect_to(:new_session)
       else
         render(:edit)
