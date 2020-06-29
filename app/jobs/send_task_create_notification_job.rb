@@ -3,6 +3,9 @@ class SendTaskCreateNotificationJob < ApplicationJob
   sidekiq_throttle_as :mailer
 
   def perform(task_id)
-    UserMailer.with(task_id: task_id).task_created.deliver_now
+    task = Task.find(task_id)
+    return if task.blank?
+
+    UserMailer.with(task: task).task_created.deliver_now
   end
 end

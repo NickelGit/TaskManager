@@ -1,22 +1,18 @@
 class UserMailer < ApplicationMailer
   default from: 'noreply@taskmanager.com'
   def task_created
-    @task = Task.find(params[:task_id])
-    author = @task.author
+    @task = params[:task]
 
-    mail(to: author.email, subject: 'New Task Created')
+    mail(to: @task.author.email, subject: 'New Task Created')
   end
 
   def task_updated
-    @task = Task.find(params[:task_id])
-    author = @task.author
+    @task = params[:task]
 
     if @task.assignee.nil?
-      mail(to: author.email, subject: 'Task Updated')
+      mail(to: @task.author.email, subject: 'Task Updated')
     else
-      assignee = @task.assignee
-
-      mail(to: [author.email, assignee.email], subject: 'Task Updated')
+      mail(to: [@task.author.email, @task.assignee.email], subject: 'Task Updated')
     end
   end
 
@@ -36,7 +32,7 @@ class UserMailer < ApplicationMailer
   end
 
   def reset_password
-    @user = User.find(params[:user_id])
+    @user = params[:user]
     @url = params[:url]
 
     mail(to: @user.email, subject: 'Reset password')

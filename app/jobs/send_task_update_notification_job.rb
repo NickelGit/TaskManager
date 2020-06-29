@@ -4,6 +4,9 @@ class SendTaskUpdateNotificationJob < ApplicationJob
   sidekiq_options lock: :until_and_while_executing, on_conflict: { client: :log, server: :reject }
 
   def perform(task_id)
-    UserMailer.with(task_id: task_id).task_updated.deliver_now
+    task = Task.find(task_id)
+    return if task.blank?
+
+    UserMailer.with(task: task).task_updated.deliver_now
   end
 end
