@@ -5,7 +5,8 @@ ARG PACKAGES="vim openssl-dev postgresql-dev build-base curl nodejs yarn less tz
 
 RUN apk update \
     && apk upgrade \
-    && apk add --update --no-cache $PACKAGES
+    && apk --update add imagemagick \
+    && apk add --update --no-cache $PACKAGES     
 
 RUN gem install bundler:2.1.4
 
