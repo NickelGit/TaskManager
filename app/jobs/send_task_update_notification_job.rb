@@ -5,7 +5,6 @@ class SendTaskUpdateNotificationJob < ApplicationJob
 
   def perform(task_id)
     task = Task.find(task_id)
-    return if task.blank?
 
     UserMailer.with(task: task).task_updated.deliver_now
   end

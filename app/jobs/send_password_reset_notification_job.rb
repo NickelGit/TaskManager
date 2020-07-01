@@ -3,9 +3,8 @@ class SendPasswordResetNotificationJob < ApplicationJob
   sidekiq_throttle_as :mailer
 
   def perform(user_id, url)
-    @user = User.find(user_id)
-    return if @user.blank?
+    user = User.find(user_id)
 
-    UserMailer.with(user: @user, url: url).reset_password.deliver_later
+    UserMailer.with(user: user, url: url).reset_password.deliver_later
   end
 end
