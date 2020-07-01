@@ -1,0 +1,13 @@
+h4 Forgot your password?
+= simple_form_for @password, url: passwords_path do |f|
+  | No problem! Just enter your email and click "Reset My Password".
+  br
+  | You will receive the email message containing link permitting you to change your password if you wish.
+  p
+    = f.input :email
+    - flash.each do |type, message|
+      .flash
+      b
+        = message    
+  p
+    = f.button  :submit, "Reset My Password"

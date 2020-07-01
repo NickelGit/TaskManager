@@ -11,7 +11,8 @@ class Api::V1::TasksController < Api::V1::ApplicationController
       ransack(ransack_params).
       result.
       page(page).
-      per(per_page)
+      per(per_page).
+      includes([:author, :assignee])
     respond_with(tasks, each_serializer: TaskSerializer, root: 'items', meta: build_meta(tasks))
   end
 
@@ -20,21 +21,33 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   def create
     task = current_user.my_tasks.new(task_params)
     task.author = current_user
-    task.save
+
+    if task.save
+      UserMailer.with({ task_id: task.id }).task_created.deliver_now
+    end
 
     respond_with(task, serializer: TaskSerializer, location: nil)
   end
 
   def update
     task = Task.find(params[:id])
-    task.update(task_params)
+    if task.update(task_params)
+      UserMailer.with({ task_id: task.id }).task_updated.deliver_now
+    end
 
     respond_with(task, serializer: TaskSerializer)
   end
 
   def destroy
     task = Task.find(params[:id])
-    task.destroy
+    if task.destroy
+      UserMailer.with({ author_id: task.author_id,
+                        assignee_id: task.assignee_id,
+                        task_id: task.id,
+                        task_name: task.name,
+                        task_description:
+        task.description }).task_deleted.deliver_now
+    end
 
     respond_with(task)
   end

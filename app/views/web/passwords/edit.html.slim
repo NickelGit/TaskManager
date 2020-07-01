@@ -1,0 +1,7 @@
+h4 Enter new password
+= simple_form_for @password, url: password_path, method: 'put' do |f|  
+  p
+    = f.input :password
+    = f.input :password_confirmation 
+  p
+    = f.button  :submit, "Change My Password", method: "put"
