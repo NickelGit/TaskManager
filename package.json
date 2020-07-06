@@ -31,6 +31,7 @@
     "ramda": "^0.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-image-crop": "^8.6.4",
     "react-select": "^3.1.0",
     "styled-components": "^5.1.0",
     "webpacker-react": "^0.3.2"
