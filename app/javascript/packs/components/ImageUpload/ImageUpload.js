@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import makeAspectCrop from 'react-image-crop';
+import { isNil, path } from 'ramda';
 
 import Button from '@material-ui/core/Button';
-import ReactCrop from 'react-crop';
+import ReactCrop from 'react-image-crop';
 
 import useStyles from './useStyles.js';
 
 const ImageUpload = ({ onUpload }) => {
   const styles = useStyles();
+
+  const DEFAULT_CROP_PARAMS = {
+    crop_x: 190,
+    crop_y: 100,
+    crop_width: 300,
+    crop_height: 300,
+  };
 
   const [fileAsBase64, changeFileAsBase64] = useState(null);
   const [cropParams, changeCropParams] = useState(DEFAULT_CROP_PARAMS);
@@ -77,6 +87,10 @@ const ImageUpload = ({ onUpload }) => {
       <input accept="image/*" id="imageUpload" type="file" onChange={handleLoadFile} hidden />
     </label>
   );
+};
+
+ImageUpload.propTypes = {
+  onUpload: PropTypes.func.isRequired,
 };
 
 export default ImageUpload;

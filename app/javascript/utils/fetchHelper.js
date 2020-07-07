@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
-import objectToFormData from 'objectToFormData';
 
+import { objectToFormData } from 'object-to-formdata';
 import { camelize, decamelize } from './keysConverter';
 
 function authenticityToken() {
