@@ -4,11 +4,11 @@ class UserMailerTest < ActionMailer::TestCase
   test 'task created' do
     user = create(:user)
     task = create(:task, author: user)
-    params = { task_id: task.id }
+    params = { task: task }
     email = UserMailer.with(params).task_created
 
     assert_emails 1 do
-      email.deliver_now
+      email.deliver_later
     end
 
     assert_equal ['noreply@taskmanager.com'], email.from
