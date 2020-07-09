@@ -158,6 +158,20 @@ const TaskBoard = () => {
     setMode(MODES.EDIT);
   };
 
+  const handleUploadImage = (task, attachment) => {
+    return TasksRepository.attachImage(task.id, attachment).then(() => {
+      loadColumnInitial(TaskPresenter.state(task));
+      handleClose();
+    });
+  };
+
+  const handleRemoveImage = (task) => {
+    return TasksRepository.removeImage(task.id).then(() => {
+      loadColumnInitial(TaskPresenter.state(task));
+      handleClose();
+    });
+  };
+
   return (
     <>
       <Fab className={styles.addButton} color="primary" aria-label="add" onClick={handleOpenAddPopup}>
@@ -170,6 +184,8 @@ const TaskBoard = () => {
           onDestroyCard={handleTaskDestroy}
           onUpdateCard={handleTaskUpdate}
           onClose={handleClose}
+          onAttachImage={handleUploadImage}
+          onRemoveImage={handleRemoveImage}
           cardId={openedTaskId}
         />
       )}

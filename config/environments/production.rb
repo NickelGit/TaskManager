@@ -120,4 +120,6 @@ Rails.application.configure do
     authentication: ENV['MAILER_AUTHENTICATION'],
     enable_starttls_auto: true,
   }
+
+  Rails.application.routes.default_url_options[:host] = 'afternoon-waters-87985.herokuapp.com'
 end

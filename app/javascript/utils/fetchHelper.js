@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 
+import { objectToFormData } from 'object-to-formdata';
 import { camelize, decamelize } from './keysConverter';
 
 function authenticityToken() {
@@ -60,5 +61,24 @@ export default {
 
   delete(url) {
     return axios.delete(url).then(camelize);
+  },
+
+  putFormData(url, json) {
+    const attachment = json.attachment.image;
+    const body = decamelize(json);
+    body.attachment.image = attachment;
+    const formData = objectToFormData(body);
+
+    return axios
+      .put(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(camelize);
+  },
+
+  removeImage(url) {
+    return axios.put(url).then(camelize);
   },
 };

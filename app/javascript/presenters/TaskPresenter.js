@@ -17,4 +17,5 @@ export default new PropTypesPresenter({
     }),
   ),
   state: PropTypes.string,
+  imageUrl: PropTypes.string,
 });

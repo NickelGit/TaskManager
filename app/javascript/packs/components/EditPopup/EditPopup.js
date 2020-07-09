@@ -16,7 +16,7 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard }) => {
+const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, onAttachImage, onRemoveImage }) => {
   const [task, setTask] = useState(null);
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
@@ -48,6 +48,27 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
       alert(`Destrucion Failed! Error: ${error.message}`);
     });
   };
+
+  const handleUploadImage = (attachment) => {
+    setSaving(true);
+
+    onAttachImage(task, attachment).catch((error) => {
+      setSaving(false);
+
+      alert(`Upload image Failed! Error: ${error.message}`);
+    });
+  };
+
+  const handleRemoveImage = () => {
+    setSaving(true);
+
+    onRemoveImage(task).catch((error) => {
+      setSaving(false);
+
+      alert(`Remove image Failed! Error: ${error.message}`);
+    });
+  };
+
   const isLoading = isNil(task);
 
   return (
@@ -71,7 +92,13 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
               <CircularProgress />
             </div>
           ) : (
-            <Form errors={errors} onChange={setTask} task={task} />
+            <Form
+              errors={errors}
+              onChange={setTask}
+              onAttachImage={handleUploadImage}
+              onRemoveImage={handleRemoveImage}
+              task={task}
+            />
           )}
         </CardContent>
         <CardActions className={styles.actions}>
@@ -105,6 +132,8 @@ EditPopup.propTypes = {
   onDestroyCard: PropTypes.func.isRequired,
   onLoadCard: PropTypes.func.isRequired,
   onUpdateCard: PropTypes.func.isRequired,
+  onAttachImage: PropTypes.func.isRequired,
+  onRemoveImage: PropTypes.func.isRequired,
 };
 
 export default EditPopup;
