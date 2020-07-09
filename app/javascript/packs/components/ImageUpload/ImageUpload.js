@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import makeAspectCrop from 'react-image-crop';
+import { makeAspectCrop } from 'react-image-crop';
 import { isNil, path } from 'ramda';
 
 import Button from '@material-ui/core/Button';
 import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 import useStyles from './useStyles.js';
 
@@ -12,10 +13,10 @@ const ImageUpload = ({ onUpload }) => {
   const styles = useStyles();
 
   const DEFAULT_CROP_PARAMS = {
-    crop_x: 190,
-    crop_y: 100,
-    crop_width: 300,
-    crop_height: 300,
+    x: 0,
+    y: 0,
+    width: 150,
+    height: 150,
   };
 
   const [fileAsBase64, changeFileAsBase64] = useState(null);

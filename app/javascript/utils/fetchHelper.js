@@ -64,7 +64,9 @@ export default {
   },
 
   putFormData(url, json) {
+    const attachment = json.attachment.image;
     const body = decamelize(json);
+    body.attachment.image = attachment;
     const formData = objectToFormData(body);
 
     return axios
@@ -74,5 +76,9 @@ export default {
         },
       })
       .then(camelize);
+  },
+
+  removeImage(url) {
+    return axios.put(url).then(camelize);
   },
 };
