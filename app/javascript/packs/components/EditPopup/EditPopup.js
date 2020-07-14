@@ -23,6 +23,7 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, o
   const styles = useStyles();
 
   useEffect(() => {
+    console.log(onLoadCard(cardId));
     onLoadCard(cardId).then(setTask);
   }, []);
 
