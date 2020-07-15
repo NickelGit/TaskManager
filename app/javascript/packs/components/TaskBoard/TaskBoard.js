@@ -8,6 +8,7 @@ import Task from 'components/Task';
 import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import ColumnHeader from 'components/ColumnHeader';
+import EditPopupContainer from 'containers/EditPopupContainer';
 
 import useStyles from './useStyles';
 
@@ -60,21 +61,22 @@ const TaskBoard = (props) => {
     taskCreate(params);
     handleClose();
   };
-  const handleTaskLoad = (id) => {
-    loadTask(id);
-  };
+
   const handleTaskUpdate = (task) => {
     taskUpdate(task);
     handleClose();
   };
+
   const handleTaskDestroy = (task) => {
     taskDestroy(task);
     handleClose();
   };
+
   const handleAttachImage = (task, attachment) => {
     uploadImage(task, attachment);
     handleClose();
   };
+
   const handleRemoveImage = (task) => {
     removeImage(task);
     handleClose();
@@ -96,17 +98,24 @@ const TaskBoard = (props) => {
       </KanbanBoard>
 
       {mode === MODES.ADD && <AddPopup onCreateCard={handleTaskCreate} onClose={handleClose} />}
-      {mode === MODES.EDIT && (
-        <EditPopup
-          onLoadCard={handleTaskLoad}
-          onDestroyCard={handleTaskDestroy}
-          onUpdateCard={handleTaskUpdate}
-          onClose={handleClose}
-          cardId={openedTaskId}
-          onAttachImage={handleAttachImage}
-          onRemoveImage={handleRemoveImage}
-        />
-      )}
+      {mode === MODES.EDIT &&
+        (console.log(`before load`),
+        loadTask(openedTaskId),
+        console.log(`after load`),
+        (
+          <EditPopupContainer>
+            {({ editedTask }) => (
+              <EditPopup
+                onDestroyCard={handleTaskDestroy}
+                onUpdateCard={handleTaskUpdate}
+                onClose={handleClose}
+                editedTask={editedTask}
+                onAttachImage={handleAttachImage}
+                onRemoveImage={handleRemoveImage}
+              />
+            )}
+          </EditPopupContainer>
+        ))}
     </>
   );
 };

@@ -16,15 +16,16 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, onAttachImage, onRemoveImage }) => {
-  const [task, setTask] = useState(null);
+const EditPopup = ({ editedTask, onClose, onDestroyCard, onUpdateCard, onAttachImage, onRemoveImage }) => {
+  const [task, setTask] = useState(editedTask);
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const styles = useStyles();
 
   useEffect(() => {
-    console.log(onLoadCard(cardId));
-    onLoadCard(cardId).then(setTask);
+    console.log(`in useEffect`);
+    setTask(editedTask);
+    console.log(task);
   }, []);
 
   const handleCardUpdate = () => {
@@ -128,10 +129,9 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, o
 };
 
 EditPopup.propTypes = {
-  cardId: PropTypes.number.isRequired,
+  editedTask: TaskPresenter.shape().isRequired,
   onClose: PropTypes.func.isRequired,
   onDestroyCard: PropTypes.func.isRequired,
-  onLoadCard: PropTypes.func.isRequired,
   onUpdateCard: PropTypes.func.isRequired,
   onAttachImage: PropTypes.func.isRequired,
   onRemoveImage: PropTypes.func.isRequired,

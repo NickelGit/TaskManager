@@ -54,7 +54,7 @@ const tasksSlice = createSlice({
       return state;
     },
     loadTaskSuccess(state, { payload }) {
-      state.editedTask = payload;
+      state.editedTask = payload.task;
 
       return state;
     },
@@ -111,8 +111,9 @@ export const useTasksActions = () => {
   };
 
   const loadTask = (id) => {
-    TasksRepository.show(id).then(({ data: { task } }) => {
-      dispatch(loadTaskSuccess(task));
+    console.log(`in load`);
+    TasksRepository.show(id).then(({ data }) => {
+      dispatch(loadTaskSuccess(data));
     });
   };
 
