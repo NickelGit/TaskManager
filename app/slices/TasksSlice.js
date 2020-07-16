@@ -111,7 +111,6 @@ export const useTasksActions = () => {
   };
 
   const loadTask = (id) => {
-    console.log(`in load`);
     TasksRepository.show(id).then(({ data }) => {
       dispatch(loadTaskSuccess(data));
     });
@@ -121,6 +120,7 @@ export const useTasksActions = () => {
     const attributes = TaskForm.attributesToSubmit(task);
 
     TasksRepository.update(TaskPresenter.id(task), attributes).then(() => {
+      loadTask(TaskPresenter.id(task));
       loadColumn(TaskPresenter.state(task));
     });
   };

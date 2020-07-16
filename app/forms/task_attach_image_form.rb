@@ -12,7 +12,7 @@ class TaskAttachImageForm
     validates :crop_x, if: -> { crop_x.present? }
     validates :crop_y, if: -> { crop_y.present? }
     validates :crop_width, if: -> { crop_width.present? }
-    validates :crop_height, if: -> { crop_height.present? }    
+    validates :crop_height, if: -> { crop_height.present? }
   end
 
   validates :image, presence: true,

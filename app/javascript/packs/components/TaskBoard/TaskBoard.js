@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import KanbanBoard from '@lourenci/react-kanban';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 import Task from 'components/Task';
 import AddPopup from 'components/AddPopup';
@@ -32,7 +33,6 @@ const TaskBoard = (props) => {
     removeImage,
   } = props;
   const [mode, setMode] = useState(MODES.NONE);
-  const [openedTaskId, setOpenedTaskId] = useState(null);
   const styles = useStyles();
 
   useEffect(() => {
@@ -44,13 +44,12 @@ const TaskBoard = (props) => {
   };
 
   const handleOpenEditPopup = (task) => {
-    setOpenedTaskId(task.id);
+    loadTask(TaskPresenter.id(task));
     setMode(MODES.EDIT);
   };
 
   const handleClose = () => {
     setMode(MODES.NONE);
-    setOpenedTaskId(null);
   };
 
   const handleCardDragEnd = (task, source, destination) => {
@@ -98,22 +97,20 @@ const TaskBoard = (props) => {
       </KanbanBoard>
 
       {mode === MODES.ADD && <AddPopup onCreateCard={handleTaskCreate} onClose={handleClose} />}
-      {mode === MODES.EDIT &&
-        (loadTask(openedTaskId),
-        (
-          <EditPopupContainer>
-            {({ editedTask }) => (
-              <EditPopup
-                onDestroyCard={handleTaskDestroy}
-                onUpdateCard={handleTaskUpdate}
-                onClose={handleClose}
-                editedTask={editedTask}
-                onAttachImage={handleAttachImage}
-                onRemoveImage={handleRemoveImage}
-              />
-            )}
-          </EditPopupContainer>
-        ))}
+      {mode === MODES.EDIT && (
+        <EditPopupContainer>
+          {({ editedTask }) => (
+            <EditPopup
+              onDestroyCard={handleTaskDestroy}
+              onUpdateCard={handleTaskUpdate}
+              onClose={handleClose}
+              editedTask={editedTask}
+              onAttachImage={handleAttachImage}
+              onRemoveImage={handleRemoveImage}
+            />
+          )}
+        </EditPopupContainer>
+      )}
     </>
   );
 };

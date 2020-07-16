@@ -69,7 +69,7 @@ const EditPopup = ({ editedTask, onClose, onDestroyCard, onUpdateCard, onAttachI
     });
   };
 
-  const isLoading = isNil(task);
+  const isLoading = isNil(editedTask);
 
   return (
     <Modal className={styles.modal} open onClose={onClose}>
@@ -83,7 +83,7 @@ const EditPopup = ({ editedTask, onClose, onDestroyCard, onUpdateCard, onAttachI
           title={
             isLoading
               ? 'Your task is loading. Please be patient.'
-              : `Task # ${TaskPresenter.id(task)} [${TaskPresenter.name(task)}]`
+              : `Task # ${TaskPresenter.id(editedTask)} [${TaskPresenter.name(editedTask)}]`
           }
         />
         <CardContent>
@@ -97,7 +97,7 @@ const EditPopup = ({ editedTask, onClose, onDestroyCard, onUpdateCard, onAttachI
               onChange={setTask}
               onAttachImage={handleUploadImage}
               onRemoveImage={handleRemoveImage}
-              task={task}
+              task={editedTask}
             />
           )}
         </CardContent>
