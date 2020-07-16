@@ -23,9 +23,7 @@ const EditPopup = ({ editedTask, onClose, onDestroyCard, onUpdateCard, onAttachI
   const styles = useStyles();
 
   useEffect(() => {
-    console.log(`in useEffect`);
     setTask(editedTask);
-    console.log(task);
   }, []);
 
   const handleCardUpdate = () => {

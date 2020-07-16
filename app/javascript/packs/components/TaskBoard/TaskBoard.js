@@ -99,9 +99,7 @@ const TaskBoard = (props) => {
 
       {mode === MODES.ADD && <AddPopup onCreateCard={handleTaskCreate} onClose={handleClose} />}
       {mode === MODES.EDIT &&
-        (console.log(`before load`),
-        loadTask(openedTaskId),
-        console.log(`after load`),
+        (loadTask(openedTaskId),
         (
           <EditPopupContainer>
             {({ editedTask }) => (
