@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
 import Modal from '@material-ui/core/Modal';
@@ -16,57 +16,77 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const EditPopup = ({ editedTask, onClose, onDestroyCard, onUpdateCard, onAttachImage, onRemoveImage }) => {
-  const [task, setTask] = useState(editedTask);
+const EditPopup = ({
+  setTask,
+  loadColumn,
+  editedTask,
+  onClose,
+  onDestroyCard,
+  onUpdateCard,
+  onAttachImage,
+  onRemoveImage,
+}) => {
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const styles = useStyles();
 
-  useEffect(() => {
-    setTask(editedTask);
-  }, []);
-
   const handleCardUpdate = () => {
     setSaving(true);
 
-    onUpdateCard(task).catch((error) => {
-      setSaving(false);
-      setErrors(error || {});
+    onUpdateCard(editedTask)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors(error || {});
 
-      if (error instanceof Error) {
-        alert(`Update Failed! Error: ${error.message}`);
-      }
-    });
+        if (error instanceof Error) {
+          alert(`Update Failed! Error: ${error.message}`);
+        }
+      });
   };
 
   const handleCardDestroy = () => {
     setSaving(true);
 
-    onDestroyCard(task).catch((error) => {
-      setSaving(false);
+    onDestroyCard(editedTask)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
 
-      alert(`Destrucion Failed! Error: ${error.message}`);
-    });
+        alert(`Destrucion Failed! Error: ${error.message}`);
+      });
   };
 
   const handleUploadImage = (attachment) => {
     setSaving(true);
 
-    onAttachImage(task, attachment).catch((error) => {
-      setSaving(false);
+    onAttachImage(editedTask, attachment)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
 
-      alert(`Upload image Failed! Error: ${error.message}`);
-    });
+        alert(`Upload image Failed! Error: ${error.message}`);
+      });
   };
 
   const handleRemoveImage = () => {
     setSaving(true);
 
-    onRemoveImage(task).catch((error) => {
-      setSaving(false);
+    onRemoveImage(editedTask)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
 
-      alert(`Remove image Failed! Error: ${error.message}`);
-    });
+        alert(`Remove image Failed! Error: ${error.message}`);
+      });
   };
 
   const isLoading = isNil(editedTask);
@@ -127,6 +147,8 @@ const EditPopup = ({ editedTask, onClose, onDestroyCard, onUpdateCard, onAttachI
 };
 
 EditPopup.propTypes = {
+  setTask: PropTypes.func.isRequired,
+  loadColumn: PropTypes.func.isRequired,
   editedTask: TaskPresenter.shape().isRequired,
   onClose: PropTypes.func.isRequired,
   onDestroyCard: PropTypes.func.isRequired,

@@ -22,6 +22,7 @@ const MODES = {
 const TaskBoard = (props) => {
   const {
     board,
+    loadColumn,
     loadBoard,
     loadColumnMore,
     cardDragEnd,
@@ -44,8 +45,9 @@ const TaskBoard = (props) => {
   };
 
   const handleOpenEditPopup = (task) => {
-    loadTask(TaskPresenter.id(task));
-    setMode(MODES.EDIT);
+    loadTask(TaskPresenter.id(task)).then(() => {
+      setMode(MODES.EDIT);
+    });
   };
 
   const handleClose = () => {
@@ -56,29 +58,28 @@ const TaskBoard = (props) => {
     cardDragEnd(task, source, destination);
   };
 
-  const handleTaskCreate = (params) => {
-    taskCreate(params);
-    handleClose();
-  };
-
   const handleTaskUpdate = (task) => {
-    taskUpdate(task);
-    handleClose();
+    return taskUpdate(task).then(() => {
+      handleClose();
+    });
   };
 
   const handleTaskDestroy = (task) => {
-    taskDestroy(task);
-    handleClose();
+    return taskDestroy(task).then(() => {
+      handleClose();
+    });
   };
 
   const handleAttachImage = (task, attachment) => {
-    uploadImage(task, attachment);
-    handleClose();
+    return uploadImage(task, attachment).then(() => {
+      handleClose();
+    });
   };
 
   const handleRemoveImage = (task) => {
-    removeImage(task);
-    handleClose();
+    return removeImage(task).then(() => {
+      handleClose();
+    });
   };
 
   return (
@@ -96,11 +97,13 @@ const TaskBoard = (props) => {
         {board}
       </KanbanBoard>
 
-      {mode === MODES.ADD && <AddPopup onCreateCard={handleTaskCreate} onClose={handleClose} />}
+      {mode === MODES.ADD && <AddPopup onCreateCard={taskCreate} onClose={handleClose} loadColumn={loadColumn} />}
       {mode === MODES.EDIT && (
         <EditPopupContainer>
-          {({ editedTask }) => (
+          {({ editedTask, setTask }) => (
             <EditPopup
+              setTask={setTask}
+              loadColumn={loadColumn}
               onDestroyCard={handleTaskDestroy}
               onUpdateCard={handleTaskUpdate}
               onClose={handleClose}
@@ -116,6 +119,7 @@ const TaskBoard = (props) => {
 };
 
 TaskBoard.propTypes = {
+  loadColumn: PropTypes.func.isRequired,
   loadBoard: PropTypes.func.isRequired,
   loadColumnMore: PropTypes.func.isRequired,
   cardDragEnd: PropTypes.func.isRequired,

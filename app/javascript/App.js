@@ -12,6 +12,7 @@ const App = () => {
       <TaskBoardContainer>
         {({
           board,
+          loadColumn,
           loadBoard,
           loadColumnMore,
           cardDragEnd,
@@ -23,6 +24,7 @@ const App = () => {
           removeImage,
         }) => (
           <TaskBoard
+            loadColumn={loadColumn}
             loadBoard={loadBoard}
             board={board}
             loadColumnMore={loadColumnMore}

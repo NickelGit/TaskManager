@@ -7,6 +7,7 @@ const TaskBoardContainer = (props) => {
 
   const {
     loadBoard,
+    loadColumn,
     loadColumnMore,
     cardDragEnd,
     taskCreate,
@@ -19,6 +20,7 @@ const TaskBoardContainer = (props) => {
 
   return children({
     board,
+    loadColumn,
     loadBoard,
     loadColumnMore,
     cardDragEnd,

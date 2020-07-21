@@ -17,23 +17,31 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const AddPopup = ({ onClose, onCreateCard }) => {
-  const [task, changeTask] = useState(TaskForm.defaultAttributes());
+const AddPopup = ({ onClose, onCreateCard, loadColumn }) => {
+  const [newTask, changeTask] = useState(TaskForm.defaultAttributes());
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
+
   const handleCreate = () => {
     setSaving(true);
 
-    onCreateCard(task).catch((error) => {
-      setSaving(false);
-      setErrors(error || {});
+    onCreateCard(newTask)
+      .then(({ data: { task } }) => {
+        loadColumn(TaskPresenter.state(task));
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors(error || {});
 
-      if (error instanceof Error) {
-        alert(`Creation Failed! Error: ${error.message}`);
-      }
-    });
+        if (error instanceof Error) {
+          alert(`Creation Failed! Error: ${error.message}`);
+        }
+      });
+    onClose();
   };
-  const handleChangeTextField = (fieldName) => (event) => changeTask({ ...task, [fieldName]: event.target.value });
+
+  const handleChangeTextField = (fieldName) => (event) => changeTask({ ...newTask, [fieldName]: event.target.value });
+
   const styles = useStyles();
 
   return (
@@ -53,7 +61,7 @@ const AddPopup = ({ onClose, onCreateCard }) => {
               error={has('name', errors)}
               helperText={errors.name}
               onChange={handleChangeTextField('name')}
-              value={TaskPresenter.name(task)}
+              value={TaskPresenter.name(newTask)}
               label="Name"
               required
               margin="dense"
@@ -62,7 +70,7 @@ const AddPopup = ({ onClose, onCreateCard }) => {
               error={has('description', errors)}
               helperText={errors.description}
               onChange={handleChangeTextField('description')}
-              value={TaskPresenter.description(task)}
+              value={TaskPresenter.description(newTask)}
               label="Description"
               required
               margin="dense"
@@ -80,6 +88,7 @@ const AddPopup = ({ onClose, onCreateCard }) => {
 };
 
 AddPopup.propTypes = {
+  loadColumn: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onCreateCard: PropTypes.func.isRequired,
 };

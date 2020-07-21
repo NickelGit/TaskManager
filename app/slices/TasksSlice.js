@@ -25,6 +25,7 @@ const initialState = {
       meta: {},
     })),
   },
+  editedTask: { value: null },
 };
 
 const tasksSlice = createSlice({
@@ -58,10 +59,15 @@ const tasksSlice = createSlice({
 
       return state;
     },
+    setTaskSuccess(state, { payload }) {
+      state.editedTask = payload;
+
+      return state;
+    },
   },
 });
 
-const { loadColumnSuccess, loadColumnMoreSuccess, loadTaskSuccess } = tasksSlice.actions;
+const { loadColumnSuccess, loadColumnMoreSuccess, loadTaskSuccess, setTaskSuccess } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
 
@@ -105,50 +111,45 @@ export const useTasksActions = () => {
 
   const taskCreate = (params) => {
     const attributes = TaskForm.attributesToSubmit(params);
-    TasksRepository.create(attributes).then(({ data: { task } }) => {
-      loadColumn(TaskPresenter.state(task));
-    });
+    return TasksRepository.create(attributes);
   };
 
   const loadTask = (id) => {
-    TasksRepository.show(id).then(({ data }) => {
+    return TasksRepository.show(id).then(({ data }) => {
       dispatch(loadTaskSuccess(data));
     });
+  };
+
+  const setTask = (task) => {
+    dispatch(setTaskSuccess(task));
   };
 
   const taskUpdate = (task) => {
     const attributes = TaskForm.attributesToSubmit(task);
 
-    TasksRepository.update(TaskPresenter.id(task), attributes).then(() => {
-      loadTask(TaskPresenter.id(task));
-      loadColumn(TaskPresenter.state(task));
-    });
+    return TasksRepository.update(TaskPresenter.id(task), attributes);
   };
 
   const taskDestroy = (task) => {
-    TasksRepository.destroy(TaskPresenter.id(task)).then(() => {
-      loadColumn(TaskPresenter.state(task));
-    });
+    return TasksRepository.destroy(TaskPresenter.id(task));
   };
 
   const uploadImage = (task, attachment) => {
-    TasksRepository.attachImage(task.id, attachment).then(() => {
-      loadColumn(TaskPresenter.state(task));
-    });
+    return TasksRepository.attachImage(task.id, attachment);
   };
 
   const removeImage = (task) => {
-    TasksRepository.removeImage(task.id).then(() => {
-      loadColumn(TaskPresenter.state(task));
-    });
+    return TasksRepository.removeImage(task.id);
   };
 
   return {
+    loadColumn,
     loadBoard,
     loadColumnMore,
     cardDragEnd,
     taskCreate,
     loadTask,
+    setTask,
     taskUpdate,
     taskDestroy,
     uploadImage,
