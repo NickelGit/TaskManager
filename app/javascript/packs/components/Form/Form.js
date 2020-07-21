@@ -14,7 +14,6 @@ const Form = ({ errors, onChange, onAttachImage, onRemoveImage, task }) => {
   const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
   const handleChangeSelect = (fieldName) => (user) => onChange({ ...task, [fieldName]: user });
   const styles = useStyles();
-  console.log(TaskPresenter.imageUrl(task));
 
   return (
     <form className={styles.root}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
 import Modal from '@material-ui/core/Modal';
@@ -16,60 +16,80 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, onAttachImage, onRemoveImage }) => {
-  const [task, setTask] = useState(null);
+const EditPopup = ({
+  setTask,
+  loadColumn,
+  editedTask,
+  onClose,
+  onDestroyCard,
+  onUpdateCard,
+  onAttachImage,
+  onRemoveImage,
+}) => {
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const styles = useStyles();
 
-  useEffect(() => {
-    onLoadCard(cardId).then(setTask);
-  }, []);
-
   const handleCardUpdate = () => {
     setSaving(true);
 
-    onUpdateCard(task).catch((error) => {
-      setSaving(false);
-      setErrors(error || {});
+    onUpdateCard(editedTask)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors(error || {});
 
-      if (error instanceof Error) {
-        alert(`Update Failed! Error: ${error.message}`);
-      }
-    });
+        if (error instanceof Error) {
+          alert(`Update Failed! Error: ${error.message}`);
+        }
+      });
   };
 
   const handleCardDestroy = () => {
     setSaving(true);
 
-    onDestroyCard(task).catch((error) => {
-      setSaving(false);
+    onDestroyCard(editedTask)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
 
-      alert(`Destrucion Failed! Error: ${error.message}`);
-    });
+        alert(`Destrucion Failed! Error: ${error.message}`);
+      });
   };
 
   const handleUploadImage = (attachment) => {
     setSaving(true);
 
-    onAttachImage(task, attachment).catch((error) => {
-      setSaving(false);
+    onAttachImage(editedTask, attachment)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
 
-      alert(`Upload image Failed! Error: ${error.message}`);
-    });
+        alert(`Upload image Failed! Error: ${error.message}`);
+      });
   };
 
   const handleRemoveImage = () => {
     setSaving(true);
 
-    onRemoveImage(task).catch((error) => {
-      setSaving(false);
+    onRemoveImage(editedTask)
+      .then(() => {
+        loadColumn(TaskPresenter.state(editedTask));
+      })
+      .catch((error) => {
+        setSaving(false);
 
-      alert(`Remove image Failed! Error: ${error.message}`);
-    });
+        alert(`Remove image Failed! Error: ${error.message}`);
+      });
   };
 
-  const isLoading = isNil(task);
+  const isLoading = isNil(editedTask);
 
   return (
     <Modal className={styles.modal} open onClose={onClose}>
@@ -83,7 +103,7 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, o
           title={
             isLoading
               ? 'Your task is loading. Please be patient.'
-              : `Task # ${TaskPresenter.id(task)} [${TaskPresenter.name(task)}]`
+              : `Task # ${TaskPresenter.id(editedTask)} [${TaskPresenter.name(editedTask)}]`
           }
         />
         <CardContent>
@@ -97,7 +117,7 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, o
               onChange={setTask}
               onAttachImage={handleUploadImage}
               onRemoveImage={handleRemoveImage}
-              task={task}
+              task={editedTask}
             />
           )}
         </CardContent>
@@ -127,10 +147,11 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard, o
 };
 
 EditPopup.propTypes = {
-  cardId: PropTypes.number.isRequired,
+  setTask: PropTypes.func.isRequired,
+  loadColumn: PropTypes.func.isRequired,
+  editedTask: TaskPresenter.shape().isRequired,
   onClose: PropTypes.func.isRequired,
   onDestroyCard: PropTypes.func.isRequired,
-  onLoadCard: PropTypes.func.isRequired,
   onUpdateCard: PropTypes.func.isRequired,
   onAttachImage: PropTypes.func.isRequired,
   onRemoveImage: PropTypes.func.isRequired,
